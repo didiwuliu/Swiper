@@ -64,9 +64,6 @@
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
-        <!-- Add Arrows -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
     </div>
 
     <!-- Swiper JS -->
@@ -77,9 +74,26 @@
     var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         paginationClickable: true,
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        spaceBetween: 30
+        slidesPerView: 5,
+        spaceBetween: 50,
+        breakpoints: {
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 40
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 30
+            },
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 20
+            },
+            320: {
+                slidesPerView: 1,
+                spaceBetween: 10
+            }
+        }
     });
     </script>
 </body>

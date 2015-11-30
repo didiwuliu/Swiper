@@ -5,7 +5,11 @@
     /* Fix of Webkit flickering */
     z-index:1;
 }
-
+.swiper-container-no-flexbox {
+    .swiper-slide {
+        float: left;
+    }
+}
 .swiper-container-vertical > .swiper-wrapper{
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;
@@ -23,7 +27,6 @@
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    .preserve3d();
 
     -webkit-transition-property:-webkit-transform;
     -moz-transition-property:-moz-transform;
@@ -31,20 +34,21 @@
     -ms-transition-property:-ms-transform;
     transition-property:transform;
     
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.swiper-container-android .swiper-slide, .swiper-wrapper {
     -webkit-transform:translate3d(0px,0,0);
     -moz-transform:translate3d(0px,0,0);
     -o-transform:translate(0px,0px);
     -ms-transform:translate3d(0px,0,0);
     transform:translate3d(0px,0,0);
-
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
 }
 .swiper-container-multirow > .swiper-wrapper {
     -webkit-box-lines: multiple;
     -moz-box-lines: multiple;
-    -ms-fles-wrap: wrap;
+    -ms-flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
@@ -57,13 +61,36 @@
     margin: 0 auto;
 }
 .swiper-slide {
-    .preserve3d();
     -webkit-flex-shrink: 0;
     -ms-flex: 0 0 auto;
     flex-shrink: 0;
     width: 100%;
     height: 100%;
     position: relative;
+}
+/* Auto Height */
+.swiper-container-autoheight, .swiper-container-autoheight .swiper-slide {
+    height: auto;
+}
+.swiper-container-autoheight .swiper-wrapper {
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    -webkit-transition-property: -webkit-transform, height;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    -ms-transition-property: -ms-transform;
+    transition-property: transform, height;
+}
+/* a11y */
+.swiper-container .swiper-notification {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: -1000;
 }
 
 /* IE10 Windows Phone 8 Fixes */

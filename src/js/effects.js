@@ -24,9 +24,23 @@ s.effects = {
                     .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px)');
 
             }
+
         },
         setTransition: function (duration) {
             s.slides.transition(duration);
+            if (s.params.virtualTranslate && duration !== 0) {
+                var eventTriggered = false;
+                s.slides.transitionEnd(function () {
+                    if (eventTriggered) return;
+                    if (!s) return;
+                    eventTriggered = true;
+                    s.animating = false;
+                    var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
+                    for (var i = 0; i < triggerEvents.length; i++) {
+                        s.wrapper.trigger(triggerEvents[i]);
+                    }
+                });
+            }
         }
     },
     cube: {
@@ -78,12 +92,12 @@ s.effects = {
                 if (s.rtl) {
                     tx = -tx;
                 }
-                
+
                 if (!isH()) {
                     ty = tx;
                     tx = 0;
                 }
-                
+
                 var transform = 'rotateX(' + (isH() ? 0 : -slideAngle) + 'deg) rotateY(' + (isH() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
                 if (progress <= 1 && progress > -1) {
                     wrapperRotate = i * 90 + progress * 90;
@@ -113,7 +127,7 @@ s.effects = {
                 '-ms-transform-origin': '50% 50% -' + (s.size / 2) + 'px',
                 'transform-origin': '50% 50% -' + (s.size / 2) + 'px'
             });
-                
+
             if (s.params.cube.shadow) {
                 if (isH()) {
                     cubeShadow.transform('translate3d(0px, ' + (s.width / 2 + s.params.cube.shadowOffset) + 'px, ' + (-s.width / 2) + 'px) rotateX(90deg) rotateZ(0deg) scale(' + (s.params.cube.shadowScale) + ')');
@@ -187,8 +201,8 @@ s.effects = {
             }
 
             //Set correct perspective for IE10
-            if (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) {
-                var ws = s.wrapper.style;
+            if (s.browser.ie) {
+                var ws = s.wrapper[0].style;
                 ws.perspectiveOrigin = center + 'px 50%';
             }
         },

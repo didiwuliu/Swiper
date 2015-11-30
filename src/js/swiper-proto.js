@@ -14,7 +14,8 @@ Swiper.prototype = {
     Browser
     ====================================================*/
     browser: {
-        ie: window.navigator.pointerEnabled || window.navigator.msPointerEnabled
+        ie: window.navigator.pointerEnabled || window.navigator.msPointerEnabled,
+        ieTouch: (window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints > 1) || (window.navigator.pointerEnabled && window.navigator.maxTouchPoints > 1)
     },
     /*==================================================
     Devices
@@ -26,7 +27,7 @@ Swiper.prototype = {
         var ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
         var iphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/);
         return {
-            ios: ipad || iphone || ipad,
+            ios: ipad || iphone || ipod,
             android: android
         };
     })(),
@@ -45,7 +46,7 @@ Swiper.prototype = {
 
         flexbox: (function () {
             var div = document.createElement('div').style;
-            var styles = ('WebkitBox msFlexbox MsFlexbox WebkitFlex MozBox flex').split(' ');
+            var styles = ('alignItems webkitAlignItems webkitBoxAlign msFlexAlign mozBoxAlign webkitFlexDirection msFlexDirection mozBoxDirection mozBoxOrient webkitBoxDirection webkitBoxOrient').split(' ');
             for (var i = 0; i < styles.length; i++) {
                 if (styles[i] in div) return true;
             }

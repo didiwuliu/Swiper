@@ -3,12 +3,17 @@
   ===========================*/
 function setParallaxTransform(el, progress) {
     el = $(el);
-    var p, pX, pY, tX, tY;
-    
-    p = el.attr('data-swiper-parallax');
+    var p, pX, pY;
+    var rtlFactor = s.rtl ? -1 : 1;
+
+    p = el.attr('data-swiper-parallax') || '0';
     pX = el.attr('data-swiper-parallax-x');
     pY = el.attr('data-swiper-parallax-y');
-    if (!pX && !pY && p) {
+    if (pX || pY) {
+        pX = pX || '0';
+        pY = pY || '0';
+    }
+    else {
         if (isH()) {
             pX = p;
             pY = '0';
@@ -18,17 +23,12 @@ function setParallaxTransform(el, progress) {
             pX = '0';
         }
     }
-    else {
-        if (pX) pX = pX;
-        else pX = '0';
-        if (pY) pY = pY;
-        else pY = '0';
-    }
+
     if ((pX).indexOf('%') >= 0) {
-        pX = parseInt(pX, 10) * progress + '%';
+        pX = parseInt(pX, 10) * progress * rtlFactor + '%';
     }
     else {
-        pX = pX * progress + 'px' ;
+        pX = pX * progress * rtlFactor + 'px' ;
     }
     if ((pY).indexOf('%') >= 0) {
         pY = parseInt(pY, 10) * progress + '%';
@@ -36,16 +36,14 @@ function setParallaxTransform(el, progress) {
     else {
         pY = pY * progress + 'px' ;
     }
-    tX = pX;
-    tY = pY;
 
-    el.transform('translate3d(' + tX + ', ' + tY + ',0px)');
-}   
+    el.transform('translate3d(' + pX + ', ' + pY + ',0px)');
+}
 s.parallax = {
     setTranslate: function () {
         s.container.children('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
             setParallaxTransform(this, s.progress);
-            
+
         });
         s.slides.each(function () {
             var slide = $(this);
@@ -65,4 +63,3 @@ s.parallax = {
         });
     }
 };
-    
